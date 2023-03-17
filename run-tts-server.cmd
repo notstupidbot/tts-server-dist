@@ -1,3 +1,3 @@
 @echo off
 
-python app.py
+waitress-serve --port=5002 app:app
