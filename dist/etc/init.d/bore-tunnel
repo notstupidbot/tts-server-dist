@@ -4,8 +4,8 @@
 
 set -e
 
-DAEMON="/container/dist/sbin/run-tts-server.sh"
-NAME="run-tts-server.sh"
+DAEMON="/container/dist/sbin/run-bore-shh-tunnel.sh"
+NAME="run-bore-shh-tunnel.sh"
 PATH="/container/dist/sbin:/container/dist/bin:/sbin:/bin:/usr/sbin:/usr/bin"
 LOGFILE="/var/log/$NAME.log"
 CHROOT="/var/run/$NAME/empty"
@@ -18,16 +18,16 @@ test -x "${DAEMON}" || exit 0
 
 case "${1}" in
   start)
-    log_daemon_msg "Starting Waitress on Port 5002" "${NAME}"
+    log_daemon_msg "Starting Bore Local 22" "${NAME}"
 
     ${0} stop
    
 
-    start-stop-daemon --start --background -m --oknodo --pidfile /var/run/waitress-tts.pid --exec ${DAEMON}
+    start-stop-daemon --start --background -m --oknodo --pidfile /var/run/bore-tunnel.pid --exec ${DAEMON}
     n=0
     while [ ${n} -le 5 ]
     do 
-      _PID=`ps -ef | awk '/\/container\/dist\/bin\/waitress-serve/{print $2}'`
+      _PID=`ps -ef | awk '/\/container\/dist\/sbin\/run-bore-shh-tunnel.sh/{print $2}'`
       if [ ! -z "$_PID" ]
       then
         break
@@ -48,14 +48,14 @@ case "${1}" in
     ;;
 
   stop)
-    _PID=`ps -ef | awk '/\/container\/dist\/bin\/waitress-serve/{print $2}'`
+    _PID=`ps -ef | awk '/\/container\/dist\/sbin\/run-bore-shh-tunnel.sh/{print $2}'`
 
     if [ -z "$_PID" ]
     then
       log_daemon_msg "${NAME} is not Running"
       # exit 1
     else
-      log_daemon_msg "Stopping Waitress Server Port 5002" "${NAME}"
+      log_daemon_msg "Stopping Bore Local 22" "${NAME}"
       kill "$_PID"
     fi
     ;;
@@ -68,7 +68,7 @@ case "${1}" in
 
   status)
     
-    _PID=`ps -ef | awk '/\/container\/dist\/bin\/waitress-serve/{print $2}'`
+    _PID=`ps -ef | awk '/\/container\/dist\/sbin\/run-bore-shh-tunnel.sh/{print $2}'`
     if [ -z "$_PID" ]
     then
       log_daemon_msg "${NAME} is not Running"

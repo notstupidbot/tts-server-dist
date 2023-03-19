@@ -9,7 +9,7 @@ from threading import Lock
 from typing import Union
 from g2p_id import G2P
 g2p = G2P()
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, json, jsonify
 from flask_cors import CORS, cross_origin
 from TTS.config import load_config
 from TTS.utils.manage import ModelManager
@@ -199,7 +199,19 @@ def tts():
         out = io.BytesIO()
         synthesizer.save_wav(wavs, out)
     return send_file(out, mimetype="audio/wav")
-
+@app.route("/api/tts2file", methods=["GET"])
+@cross_origin
+def tts2file():
+    with lock:
+        text = request.args.get("text")
+        speaker_idx = request.args.get("speaker_id", "")
+        language_idx = request.args.get("language_id", "")
+        style_wav = request.args.get("style_wav", "")
+        style_wav = style_wav_uri_to_dict(style_wav)
+        wavs = synthesizer.tts(text, speaker_name=speaker_idx, language_name=language_idx, style_wav=style_wav)
+        file_path = "public/tts-output/test.wav"
+        synthesizer.save_wav(wavs, path=file_path)
+    return send_file(out, mimetype="audio/wav")
 @app.route("/api/convert", methods=["GET"])
 @cross_origin()
 def convert():

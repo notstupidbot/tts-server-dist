@@ -39,7 +39,12 @@ svc vsftpd s
 
 # 7. starting gotty
 svc gotty s
+# 7. starting bore
+svc bore-tunnel s
+sleep 3
+echo "saving server info supabase"
 
+save-server-info.py
 # 8. Setup python site-packages
 cd /container
 mkdir -p /container/site-packages
