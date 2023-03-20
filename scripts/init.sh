@@ -42,9 +42,7 @@ svc gotty s
 # 7. starting bore
 svc bore-tunnel s
 sleep 3
-echo "saving server info supabase"
-
-save-server-info.py
+cat /tmp/bore.log
 # 8. Setup python site-packages
 cd /container
 mkdir -p /container/site-packages
@@ -55,6 +53,8 @@ wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download
 echo "Mounting  site-packages.squashfs"
 squashfuse site-packages.squashfs site-packages
 
+echo "saving server info supabase"
+save-server-info.py
 # 9. Starting TTS-server
 svc tts-server s
 # cd /container/dist/tts-indonesia
