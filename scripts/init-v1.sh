@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
 
-# 1. Loading Base System 
+# 1. Loading Base System
+#https://drive.google.com/file/d/105957AqKTtshgD_OtFSK4ZbXMoG1lXWL/view?usp=sharing
 cd /content
 echo "Downloading base system dist-tts-server.7z"
 
-gdown "105957AqKTtshgD_OtFSK4ZbXMoG1lXWL"
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=105957AqKTtshgD_OtFSK4ZbXMoG1lXWL' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=105957AqKTtshgD_OtFSK4ZbXMoG1lXWL" -O dist-tts-server.7z && rm -rf /tmp/cookies.txt
 
 mkdir -p /container/dist
 mkdir -p /container/src
@@ -47,15 +48,15 @@ cd /container
 mkdir -p /container/site-packages
 #https://drive.google.com/file/d/1-Bz1gotwZeSRRDa8Ss7q-FudHaJAwLAK/view?usp=sharing 
 echo "Downloading python site-packages site-packages.squashfs"
-gdown "1-Bz1gotwZeSRRDa8Ss7q-FudHaJAwLAK"
 
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1-Bz1gotwZeSRRDa8Ss7q-FudHaJAwLAK' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1-Bz1gotwZeSRRDa8Ss7q-FudHaJAwLAK" -O site-packages.squashfs && rm -rf /tmp/cookies.txt
 echo "Mounting  site-packages.squashfs"
 squashfuse site-packages.squashfs site-packages
 
 echo "saving server info supabase"
 save-server-info.py
 # 9. Starting TTS-server
-#svc tts-server s
+svc tts-server s
 # cd /container/dist/tts-indonesia
 
 # git-pull
