@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+echo "Adding kutuku.pret to etc/hosts"
+echo "127.0.0.1     kutuku.pret    ">> /etc/hosts
 
 # 1. Loading Base System 
 cd /content
